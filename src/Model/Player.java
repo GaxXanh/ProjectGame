@@ -18,10 +18,11 @@ public class Player extends Character {
 
     @Override
     public void loadAnimations() {
-        frameDictionary.put(CharacterState.MOVE_UP, this.loadAnimations("moveUpAnim", true));
-        frameDictionary.put(CharacterState.MOVE_RIGHT, this.loadAnimations("moveRightAnim", true));
-        frameDictionary.put(CharacterState.MOVE_DOWN, this.loadAnimations("moveDownAnim", true));
-        frameDictionary.put(CharacterState.MOVE_LEFT, this.loadAnimations("moveLeftAnim", true));
+        String object = "Monk";
+        frameDictionary.put(CharacterState.MOVE_UP, this.loadAnimations("moveUpAnim", true, object));
+        frameDictionary.put(CharacterState.MOVE_RIGHT, this.loadAnimations("moveRightAnim", true, object));
+        frameDictionary.put(CharacterState.MOVE_DOWN, this.loadAnimations("moveDownAnim", true, object));
+        frameDictionary.put(CharacterState.MOVE_LEFT, this.loadAnimations("moveLeftAnim", true, object));
     }
 
     @Override

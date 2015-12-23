@@ -36,7 +36,7 @@ public abstract class Character extends GameObject{
 
     public void loadAnimations() {}
 
-    protected AnimatedImage loadAnimations(String className, String animationName, boolean repeat) {
+    protected AnimatedImage loadAnimations(String className, String animationName, boolean repeat, String object) {
         try {
             Map<String, Object> root = Plist.load("data/" + className + ".plist");
             Map<String, Object> properties = (Map<String, Object>)root.get(animationName);
@@ -45,7 +45,7 @@ public abstract class Character extends GameObject{
 
             Image[] images = new Image[imageNames.length];
             for (int i = 0; i < images.length; i++) {
-                images[i] = new Image(new FileInputStream("sprites/" + className + imageNames[i] + ".png"));
+                images[i] = new Image(new FileInputStream("sprites/" + object + imageNames[i] + ".png"));
             }
             AnimatedImage result = new AnimatedImage(images, duration, repeat);
             return result;
@@ -56,8 +56,8 @@ public abstract class Character extends GameObject{
         return null;
     }
 
-    protected AnimatedImage loadAnimations(String animationName, boolean repeat) {
-        return loadAnimations(this.getClassName(), animationName, repeat);
+    protected AnimatedImage loadAnimations(String animationName, boolean repeat, String object) {
+        return loadAnimations(this.getClassName(), animationName, repeat, object);
     }
 
     public enum CharacterState{
