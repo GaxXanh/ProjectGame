@@ -10,7 +10,7 @@ public class Config {
     public final static double NANOSECONDPERSEC = 1000000000.0;
 
     public static class WindowProperties {
-        public final static int WINDOW_WIDTH = 1200;
-        public final static int WINDOW_HEIGHT = 700;
+        public final static int WINDOW_WIDTH = 900;
+        public final static int WINDOW_HEIGHT = 576;
     }
 }

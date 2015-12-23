@@ -37,6 +37,8 @@ public class GameScene extends Scene {
         super(new Group());
         setupGameLoop();
         newGame();
+
+        map = new TileMap(this, 4);
     }
 
     private void setupGameLoop() {
@@ -111,7 +113,7 @@ public class GameScene extends Scene {
         gc.fillRect(0, 0, Config.WindowProperties.WINDOW_WIDTH, Config.WindowProperties.WINDOW_HEIGHT);
 
         // our code will come here
-
+        map.render(gc);
 
         // for debug purpose
         gc.setStroke(Color.AQUA);
