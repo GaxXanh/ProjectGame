@@ -7,8 +7,10 @@ package Config;
  * Project: ProjectGame
  */
 public class Config {
-    public static class WindowProperties{
-        public static final int WINDOW_WIDTH = 900;
-        public static final int WINDOW_HEIGHT = 576;
+    public final static double NANOSECONDPERSEC = 1000000000.0;
+
+    public static class WindowProperties {
+        public final static int WINDOW_WIDTH = 1200;
+        public final static int WINDOW_HEIGHT = 700;
     }
 }
