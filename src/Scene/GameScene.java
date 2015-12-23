@@ -1,7 +1,9 @@
 package Scene;
 
 import Config.Config;
+import Geometric.Vector2D;
 import Map.TileMap;
+import Model.Player;
 import javafx.animation.AnimationTimer;
 import javafx.event.EventHandler;
 import javafx.scene.Group;
@@ -32,6 +34,7 @@ public class GameScene extends Scene {
 
     // variables
     private TileMap map;
+    Player player;
 
     public GameScene() {
         super(new Group());
@@ -89,7 +92,17 @@ public class GameScene extends Scene {
     }
 
     private void handleEvents(List<String> input) {
-
+        if (input.contains("LEFT")) {
+            this.player.moveLeft();
+        } else if (input.contains("RIGHT"))
+            this.player.moveRight();
+        else if (input.contains("UP")) {
+            this.player.moveUp();
+        } else if (input.contains("DOWN")) {
+            this.player.moveDown();
+        } else {
+            this.player.stopMove();
+        }
     }
 
     private void update(long currentTime) {
@@ -98,12 +111,12 @@ public class GameScene extends Scene {
         lastUpdateTime = currentTime;
 
         // logic code come here
-
+        player.update(dt);
 
         // for debug purpose
         if (debugInterval >= 30) {
             debugInterval = 0;
-            this.fps = (int)(1 / dt);
+            this.fps = (int) (1 / dt);
         }
         debugInterval++;
     }
@@ -114,6 +127,7 @@ public class GameScene extends Scene {
 
         // our code will come here
         map.render(gc);
+        player.render(gc);
 
         // for debug purpose
         gc.setStroke(Color.AQUA);
@@ -121,6 +135,7 @@ public class GameScene extends Scene {
     }
 
     private void newGame() {
-
+        player = new Player("sprites/Player00.png");
+        player.setPosition(new Vector2D(100, 100));
     }
 }

@@ -7,5 +7,14 @@ package Model;
  * Project: ProjectGame
  */
 public class GameObject extends Sprite{
+    public GameObject(String imageName){
+        super(imageName);
+    }
 
+    public GameObject(){}
+
+    @Override
+    public void update(double dt) {
+
+    }
 }

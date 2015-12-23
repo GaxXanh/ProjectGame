@@ -7,8 +7,8 @@ package Geometric;
  * Project: ProjectGame
  */
 public class Size {
-    private double width;
-    private double height;
+    public double width;
+    public double height;
 
     public Size(double width, double height) {
         this.width = width;
