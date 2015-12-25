@@ -68,14 +68,15 @@ public class Player extends Character {
     void controlVelocityAndPosition(double dt) {
         this.velocity = new Vector2D(this.velocity.x * 0.85, this.velocity.y * 0.85);
         Vector2D velocityStep = Vector2DHelper.multiByScalar(this.velocity, dt);
-        Vector2D newPosition = Vector2DHelper.addVector(this.position, velocityStep);
-        checkCollision(newPosition);
+        velocityStep = checkCollision(velocityStep);
+        this.position = Vector2DHelper.addVector(this.position, velocityStep);
     }
 
     @Override
-    Vector2D checkCollision(Vector2D newPosition) {
-        // check condition here
-        return newPosition;
+    Vector2D checkCollision(Vector2D velocityStep) {
+        // Code ...
+
+        return velocityStep;
     }
 
     @Override
