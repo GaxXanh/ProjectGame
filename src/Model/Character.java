@@ -3,8 +3,10 @@ package Model;
 import Geometric.Vector2D;
 import javafx.scene.image.Image;
 import xmlwise.Plist;
+import xmlwise.XmlParseException;
 
 import java.io.FileInputStream;
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -18,75 +20,62 @@ public abstract class Character extends GameObject{
 
     protected Map<CharacterState, AnimatedImage> frameDictionary;
     protected CharacterState characterState;
-    protected double timeElapsedSinceStartAnimation;
-    protected AnimatedImage animation;
     protected int characterDirection;
-
-    public Vector2D velocity = Vector2D.zero;
-
+    protected AnimatedImage animation;
+    protected double timeElapsedSinceStartAnimation;
     protected boolean isMoving = false;
+    protected Vector2D velocity = Vector2D.zero;
 
     public Character(String imageName){
         super(imageName);
+
         this.characterState = CharacterState.STANDING;
-        this.frameDictionary = new HashMap<>();
+        frameDictionary = new HashMap<>();
         this.timeElapsedSinceStartAnimation = 0;
         this.loadAnimations();
     }
 
-    public void loadAnimations() {}
+    protected void changeState(CharacterState newState){
+        if (newState == this.characterState) return;
+        this.characterState = newState;
+        this.timeElapsedSinceStartAnimation = 0;
+    }
 
-    protected AnimatedImage loadAnimations(String className, String animationName, boolean repeat, String object) {
+    protected void updateAnimation(double dt){
+        timeElapsedSinceStartAnimation += dt;
+        animation = frameDictionary.get(characterState);
+        animation.repeat = isMoving;
+        this.setTexture(animation.getFrame(timeElapsedSinceStartAnimation));
+    }
+
+    protected AnimatedImage loadAnimations(String animationName, boolean repeat)
+    {
+        String className = this.getClassName();
         try {
             Map<String, Object> root = Plist.load("data/" + className + ".plist");
-            Map<String, Object> properties = (Map<String, Object>)root.get(animationName);
+            Map<String, Object> properties = (Map<String, Object>) root.get(animationName);
             String[] imageNames = properties.get("animationFrames").toString().split(",");
             double duration = Double.valueOf(properties.get("delay").toString());
 
             Image[] images = new Image[imageNames.length];
             for (int i = 0; i < images.length; i++) {
-                images[i] = new Image(new FileInputStream("sprites/" + object + imageNames[i] + ".png"));
+                images[i] = new Image(new FileInputStream("sprites/" + className + imageNames[i] + ".png"));
             }
-            AnimatedImage result = new AnimatedImage(images, duration, repeat);
+            AnimatedImage result = new  AnimatedImage(images, duration, repeat);
             return result;
-
-        } catch (Exception exception) {
-            exception.printStackTrace();
+        } catch (XmlParseException | IOException e) {
+            e.printStackTrace();
         }
         return null;
     }
 
-    protected AnimatedImage loadAnimations(String animationName, boolean repeat, String object) {
-        return loadAnimations(this.getClassName(), animationName, repeat, object);
-    }
+    abstract void loadAnimations();
+    abstract void updateStateAndAcceleratorAndVelocity(double dt);
+    abstract void controlVelocityAndPosition(double dt);
 
-    public enum CharacterState{
+    public enum CharacterState
+    {
         STANDING, MOVE_UP, MOVE_RIGHT, MOVE_DOWN, MOVE_LEFT
-    }
-
-    @Override
-    public void update(double dt) {
-        updateAnimation(dt);
-    }
-
-    protected void updateState(double dt) {
-
-    }
-
-    protected void updateAnimation(double dt){
-        this.timeElapsedSinceStartAnimation += dt;
-        double elapsedTime = (double)(this.timeElapsedSinceStartAnimation);
-        animation = frameDictionary.get(this.characterState);
-        animation.repeat = isMoving;
-
-        this.setTexture(animation.getFrame(elapsedTime));
-    }
-
-    public void changeState(CharacterState newState) {
-        if (newState == this.characterState) return;
-        this.characterState = newState;
-        this.timeElapsedSinceStartAnimation = 0;
-        animation = frameDictionary.get(this.characterState);
     }
 
     public class CharacterDirection {

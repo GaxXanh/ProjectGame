@@ -40,16 +40,14 @@ public class GameScene extends Scene {
         super(new Group());
         setupGameLoop();
         newGame();
-
-        map = new TileMap(this, 4);
     }
 
     private void setupGameLoop() {
-        this.setProperties();
-        this.setOnKey();
-        this.setAnimationTimer();
+        setProperties();
+        setOnKey();
+        setAnimationTimer();
 
-        this.mainLoopManager.start();
+        mainLoopManager.start();
     }
 
     private void setProperties() {
@@ -92,17 +90,11 @@ public class GameScene extends Scene {
     }
 
     private void handleEvents(List<String> input) {
-        if (input.contains("LEFT")) {
-            this.player.moveLeft();
-        } else if (input.contains("RIGHT"))
-            this.player.moveRight();
-        else if (input.contains("UP")) {
-            this.player.moveUp();
-        } else if (input.contains("DOWN")) {
-            this.player.moveDown();
-        } else {
-            this.player.stopMove();
-        }
+        if (input.contains("LEFT")) this.player.moveLeft();
+        else if (input.contains("RIGHT")) this.player.moveRight();
+        else if (input.contains("DOWN")) this.player.moveDown();
+        else if (input.contains("UP")) this.player.moveUp();
+        else this.player.stopMove();
     }
 
     private void update(long currentTime) {
@@ -113,7 +105,7 @@ public class GameScene extends Scene {
         // logic code come here
         player.update(dt);
 
-        // for debug purpose
+        // debug
         if (debugInterval >= 30) {
             debugInterval = 0;
             this.fps = (int) (1 / dt);
@@ -134,7 +126,9 @@ public class GameScene extends Scene {
         gc.strokeText("FPS: " + String.valueOf(this.fps), this.getWidth() - 80, this.getHeight() - 30);
     }
 
+    // This method specifies map, player for new game
     private void newGame() {
+        map = new TileMap(this, 5);
         player = new Player("sprites/Player00.png");
         player.setPosition(new Vector2D(100, 100));
     }

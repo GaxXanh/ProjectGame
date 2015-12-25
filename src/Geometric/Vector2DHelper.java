@@ -1,14 +1,16 @@
 package Geometric;
 
+import Config.Config;
+
 /**
  * Created by BTC on 2015/12/17.
  */
 public class Vector2DHelper {
-   public static Vector2D AddVector(Vector2D v1, Vector2D v2) {
+   public static Vector2D addVector(Vector2D v1, Vector2D v2) {
       return new Vector2D(v1.x + v2.x, v1.y + v2.y);
    }
 
-   public static Vector2D MutilByScalar(Vector2D vector, double scalar) {
+   public static Vector2D multiByScalar(Vector2D vector, double scalar) {
       return new Vector2D(vector.x * scalar, vector.y * scalar);
    }
 
@@ -30,5 +32,12 @@ public class Vector2DHelper {
       double length = vector.length();
       return new Vector2D(vector.x / length, vector.y / length);
    }
+
+//   public static Vector2D clamped(Vector2D vector){
+//      if (vector.x > Config.PlayerProperties.MAX_MOVE_SPEED) vector.x = Config.PlayerProperties.MAX_MOVE_SPEED;
+//      else if (vector.x < 0) vector.x = 0;
+//      if (vector.y > Config.PlayerProperties.MAX_MOVE_SPEED) vector.y = Config.PlayerProperties.MAX_MOVE_SPEED;
+//      else if (vector.x < 0) vector.x = 0;
+//   }
 }
 

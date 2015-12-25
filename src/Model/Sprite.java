@@ -35,30 +35,24 @@ public class Sprite {
         }
     }
 
-    public Sprite() { }
+    public Sprite() {
+    }
 
     public void setPosition(Vector2D position) {
         this.position = position;
     }
 
     public void render(GraphicsContext gc) {
-        if (flipX){
-            gc.drawImage(this.image,
-                    position.x + size.width - size.width / 2, position.y - size.height / 2,
-                    -size.width, size.height);
-        }
-        else
-            gc.drawImage(this.image,
-                    position.x - size.width / 2, position.y  - size.height / 2,
-                    size.width, size.height);
-
+        gc.drawImage(this.image,
+                position.x - size.width / 2, position.y - size.height / 2,
+                size.width, size.height);
     }
 
     public void update(double dt) {
 
     }
 
-    public void setTexture(Image newImage) {
+    protected void setTexture(Image newImage) {
         this.image = newImage;
         this.size = new Size(newImage.getWidth(), newImage.getHeight());
     }

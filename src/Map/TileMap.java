@@ -1,7 +1,5 @@
 package Map;
 
-import Geometric.Size;
-import Geometric.Vector2D;
 import Model.GameObject;
 import Scene.GameScene;
 import javafx.scene.canvas.GraphicsContext;
@@ -27,7 +25,9 @@ public class TileMap extends GameObject {
     private static int tileWidth;
     private static int tileHeight;
     private static Image tileSet;
-    private static int tileSetWidth;
+    private static int numberTilePerRow;
+    private static int tileSpacing = 0;
+    private static int tileMargin = 0;
 
     public static int getMapWidth() {
         return mapWidth;
@@ -59,12 +59,18 @@ public class TileMap extends GameObject {
         XmlElement tilesetNode = root.getFirst();
         XmlElement imageSourceNode = tilesetNode.getFirst();
         String imageURL = imageSourceNode.getAttribute("source");
-        this.tileSetWidth = Integer.valueOf(imageSourceNode.getAttribute("width")) / 32;
 
         this.tileWidth = Integer.valueOf(root.getAttribute("tilewidth"));
         this.tileHeight = Integer.valueOf(root.getAttribute("tileheight"));
         this.mapWidth = Integer.valueOf(root.getAttribute("width"));
         this.mapHeight = Integer.valueOf(root.getAttribute("height"));
+        if (tilesetNode.containsAttribute("margin")) {
+            this.tileMargin = Integer.valueOf(tilesetNode.getAttribute("margin"));
+        }
+        if (tilesetNode.containsAttribute("spacing")) {
+            this.tileSpacing = Integer.valueOf(tilesetNode.getAttribute("spacing"));
+        }
+        this.numberTilePerRow = (Integer.valueOf(imageSourceNode.getAttribute("width")) + tileSpacing - tileMargin) / tileWidth;
         try {
             this.tileSet = new Image(new FileInputStream("levels/" + imageURL));
 
@@ -77,7 +83,7 @@ public class TileMap extends GameObject {
         loadMapFromXML("level" + level + ".tmx");
     }
 
-    public void render(GraphicsContext gc){
+    public void render(GraphicsContext gc) {
         if (layersList.size() <= 0 || mapHeight * mapWidth <= 0) return;
         int size = mapWidth * mapHeight;
         for (int i = 0; i < layersList.size(); i++) {
@@ -95,11 +101,11 @@ public class TileMap extends GameObject {
                 double dy = this.position.y + row * tileWidth;
                 double dx = this.position.x + col * tileHeight;
 
-                int tileRow = gid / tileSetWidth;
-                int tileCol = gid % tileSetWidth;
+                int tileRow = gid / numberTilePerRow;
+                int tileCol = gid % numberTilePerRow;
 
-                int sx = tileCol * tileWidth;
-                int sy = tileRow * tileHeight;
+                int sx = tileMargin + tileCol * (tileWidth + tileSpacing);
+                int sy = tileMargin + tileRow * (tileWidth + tileSpacing);
 
                 gc.drawImage(tileSet, sx, sy, tileWidth, tileHeight, dx, dy, tileWidth, tileHeight);
 
