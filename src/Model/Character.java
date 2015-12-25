@@ -72,6 +72,7 @@ public abstract class Character extends GameObject{
     abstract void loadAnimations();
     abstract void updateStateAndAcceleratorAndVelocity(double dt);
     abstract void controlVelocityAndPosition(double dt);
+    abstract Vector2D checkCollision(Vector2D newPosition);
 
     public enum CharacterState
     {
