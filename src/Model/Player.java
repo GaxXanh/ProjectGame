@@ -66,16 +66,21 @@ public class Player extends Character {
 
     @Override
     void controlVelocityAndPosition(double dt) {
+        // Calculate new velocity
         this.velocity = new Vector2D(this.velocity.x * 0.85, this.velocity.y * 0.85);
+        // velocityStep is x = v * t ( v = velocity; t = dt)
         Vector2D velocityStep = Vector2DHelper.multiByScalar(this.velocity, dt);
+        // VelocityStep là quãng đường vật đi được trong khoảng thời gian dt, gửi biến này vào hàm checkCollision,
+        // Hàm sẽ trả về velocityStep có thể mà không xảy ra va chạm
         velocityStep = checkCollision(velocityStep);
+        // Add vector to old position, then we have new position to render
         this.position = Vector2DHelper.addVector(this.position, velocityStep);
     }
 
     @Override
     Vector2D checkCollision(Vector2D velocityStep) {
         // Code ...
-
+        //
         return velocityStep;
     }
 
